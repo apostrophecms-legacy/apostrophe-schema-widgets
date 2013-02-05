@@ -1,0 +1,24 @@
+/* Note heavy use of ems to make it easier to scale these down for preview */
+
+.jot-widget.jot-rss
+{
+  background-color: #eef;
+  padding: 0.5em;
+}
+
+.jot-rss-title
+{
+  font-size: 125%;
+}
+
+.jot-rss-date
+{
+  font-size: 75%;
+}
+
+.jot-rss-error
+{
+  background-color: #fee;
+  font-size: 125%;
+  padding: 0.5em;
+}

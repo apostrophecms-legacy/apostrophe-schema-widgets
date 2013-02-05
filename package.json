@@ -1,0 +1,27 @@
+{
+  "name": "jot-rss",
+  "version": "0.0.1",
+  "description": "Adds an RSS feed widget to the Jot rich content editor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/boutell/jot-rss.git"
+  },
+  "keywords": [
+    "jot",
+    "rich",
+    "text",
+    "rich",
+    "content",
+    "rss"
+  ],
+  "author": "P'unk Avenue punkave.com",
+  "license": "MIT",
+  "dependencies": {
+    "feedparser": "~0.11.0"
+  },
+  "devDependencies": {}
+}
