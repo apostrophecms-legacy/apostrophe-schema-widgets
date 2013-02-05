@@ -1,5 +1,7 @@
 var feedparser = require('feedparser');
 
+var cache = {};
+
 module.exports = function(options) {
   new widget(options);
 };
@@ -9,6 +11,8 @@ function widget(options) {
   var app = options.app;
   var self = this;
   
+  var lifetime = options.lifetime ? options.lifetime : 60000;
+
   // This widget should be part of the default set of widgets for areas
   // (this isn't mandatory)
   jot.defaultControls.push('rss');
@@ -18,8 +22,9 @@ function widget(options) {
 
   // Make sure that jotScripts and jotStylesheets summon our assets
 
-  // We don't need any browser-side js in this case, so far anyway
-  // jot.scripts.push('/jot-rss/js/rss.js');
+  // We need the editor for RSS feeds. (TODO: consider separate script lists for
+  // resources needed also by non-editing users.)
+  jot.scripts.push('/jot-rss/js/rss.js');
 
   jot.stylesheets.push('/jot-rss/css/rss.css');
 
@@ -38,16 +43,34 @@ function widget(options) {
     render: function(data) {
       return jot.partial('rss.html', data, __dirname + '/views');
     },
+
     // Asynchronously load the actual RSS feed
+    // The properties you add should start with an _ to denote that
+    // they shouldn't become data attributes or get stored back to MongoDB
+
     load: function(item, callback) {
-      item.entries = [];
-      // TODO: we must interpose a cache here!
+      item._entries = [];
+
+      var now = new Date();
+      if (cache.hasOwnProperty(item.feed) && ((cache[item.feed].when + lifetime) > now.getTime())) {
+        item._entries = cache[item.feed].data;
+        return callback();
+      } 
+
       feedparser.parseUrl(item.feed).on('complete', function(meta, articles) {
-        item.entries = articles;
-        console.log(item);
+        // map is native in node
+        item._entries = articles.map(function(article) {
+          return {
+            title: article.title,
+            body: article.description,
+            date: article.pubDate
+          };
+        });
+        // Cache for fast access later
+        cache[item.feed] = { when: now.getTime(), data: item._entries };
         return callback();
       }).on('error', function(error) {
-        item.failed = true;
+        item._failed = true;
         return callback();
       });
     }

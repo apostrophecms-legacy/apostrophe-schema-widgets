@@ -1,12 +1,12 @@
-{% if item.failed %}
-  <div clas="jot-rss-error">RSS feed not available.</div>
-{% else: %}
+{% if item._failed %}
+  <div class="jot-rss-error">RSS feed not available.</div>
+{% else %}
   <ul class="jot-rss-entries">
-    {% for entry in item.entries %}
+    {% for entry in item._entries %}
       <li class="jot-rss-entry">
         <ul class="jot-rss-meta">
           <li class="jot-rss-title">{{ entry.title | e }}</li>
-          <li class="jot-rss-date">{{ entry.month }}/{{ entry.day }}</li>
+          <li class="jot-rss-date">{{ entry.date }}</li>
           <li class="jot-rss-body">{{ entry.body }}</li>
         </ul>
       </li>

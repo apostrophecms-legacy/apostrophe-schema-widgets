@@ -2,8 +2,28 @@
 
 .jot-widget.jot-rss
 {
-  background-color: #eef;
+  background-color: #eee;
   padding: 0.5em;
+  text-align: left;
+}
+
+.jot-rss-entries
+{
+  list-style: none;
+}
+
+.jot-rss-entry
+{
+  padding: 0.5em;
+  border: 0.2em solid #ddd;
+  border-radius: 0.6em;
+  background-color: #ccc;
+  margin-bottom: 10px;
+}
+
+.jot-rss-meta
+{
+  list-style: none;
 }
 
 .jot-rss-title

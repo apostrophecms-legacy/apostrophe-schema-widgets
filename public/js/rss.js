@@ -3,8 +3,6 @@ jot.widgetTypes.rss = {
   editor: function(options) {
     var self = this;
         
-    self.account = '';
-
     if (!options.messages) {
       options.messages = {};
     }
@@ -27,6 +25,17 @@ jot.widgetTypes.rss = {
 
     self.type = 'rss';
     options.template = '.jot-rss-editor';
+
+    self.prePreview = getFeed;
+    self.preSave = getFeed;
+
+    function getFeed(callback) {
+      self.exists = !!self.$feed.val();
+      if (self.exists) {
+        self.data.feed = self.$feed.val();
+      }
+      return callback();
+    }
 
     // Parent class constructor shared by all widget editors
     jot.widgetEditor.call(self, options);
