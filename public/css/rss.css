@@ -1,41 +1,40 @@
 /* Note heavy use of ems to make it easier to scale these down for preview */
 
-.jot-widget.jot-rss
+.apos-widget.apos-rss
 {
   background-color: #eee;
   text-align: left;
 }
 
-.jot-rss-entries
+.apos-rss-entries
 {
   list-style: none;
 }
 
-.jot-rss-entry
+.apos-rss-entry
 {
   padding: 0.5em;
   border: 0.2em solid #ddd;
   border-radius: 0.6em;
-  background-color: #ccc;
   margin-bottom: 10px;
 }
 
-.jot-rss-meta
+.apos-rss-meta
 {
   list-style: none;
 }
 
-.jot-rss-title
+.apos-rss-title
 {
   font-size: 125%;
 }
 
-.jot-rss-date
+.apos-rss-date
 {
   font-size: 75%;
 }
 
-.jot-rss-error
+.apos-rss-error
 {
   background-color: #fee;
   font-size: 125%;

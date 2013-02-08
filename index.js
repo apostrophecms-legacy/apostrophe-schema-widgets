@@ -7,7 +7,7 @@ module.exports = function(options) {
 };
 
 function widget(options) {
-  var jot = options.jot;
+  var apos = options.apos;
   var app = options.app;
   var self = this;
   
@@ -15,23 +15,23 @@ function widget(options) {
 
   // This widget should be part of the default set of widgets for areas
   // (this isn't mandatory)
-  jot.defaultControls.push('rss');
+  apos.defaultControls.push('rss');
 
-  // Include our editor template in the markup when jotTemplates is called
-  jot.templates.push(__dirname + '/views/rssEditor');
+  // Include our editor template in the markup when aposTemplates is called
+  apos.templates.push(__dirname + '/views/rssEditor');
 
-  // Make sure that jotScripts and jotStylesheets summon our assets
+  // Make sure that aposScripts and aposStylesheets summon our assets
 
   // We need the editor for RSS feeds. (TODO: consider separate script lists for
   // resources needed also by non-editing users.)
-  jot.scripts.push('/jot-rss/js/rss.js');
+  apos.scripts.push('/apos-rss/js/rss.js');
 
-  jot.stylesheets.push('/jot-rss/css/rss.css');
+  apos.stylesheets.push('/apos-rss/css/rss.css');
 
   // Serve our assets
-  app.get('/jot-rss/*', jot.static(__dirname + '/public'));
+  app.get('/apos-rss/*', apos.static(__dirname + '/public'));
 
-  jot.itemTypes.rss = {
+  apos.itemTypes.rss = {
     widget: true,
     label: 'RSS Feed',
     css: 'rss',
@@ -41,7 +41,7 @@ function widget(options) {
       }
     },
     render: function(data) {
-      return jot.partial('rss.html', data, __dirname + '/views');
+      return apos.partial('rss.html', data, __dirname + '/views');
     },
 
     // Asynchronously load the actual RSS feed

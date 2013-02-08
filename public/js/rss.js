@@ -1,4 +1,4 @@
-jot.widgetTypes.rss = {
+apos.widgetTypes.rss = {
   label: 'RSS',
   editor: function(options) {
     var self = this;
@@ -11,20 +11,20 @@ jot.widgetTypes.rss = {
     }
 
     self.afterCreatingEl = function() {
-      self.$feed = self.$el.find('.jot-rss-feed');
+      self.$feed = self.$el.find('.apos-rss-feed');
       self.$feed.val(self.data.feed);
       setTimeout(function() {
         self.$feed.focus();
         self.$feed.setSelection(0, 0);
       }, 500);
-      self.$el.find('.jot-preview-button').click(function() {
+      self.$el.find('.apos-preview-button').click(function() {
         self.preview();
         return false;
       });
     };
 
     self.type = 'rss';
-    options.template = '.jot-rss-editor';
+    options.template = '.apos-rss-editor';
 
     self.prePreview = getFeed;
     self.preSave = getFeed;
@@ -38,7 +38,7 @@ jot.widgetTypes.rss = {
     }
 
     // Parent class constructor shared by all widget editors
-    jot.widgetEditor.call(self, options);
+    apos.widgetEditor.call(self, options);
   },
 };
 

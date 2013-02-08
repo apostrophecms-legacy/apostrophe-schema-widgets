@@ -1,16 +1,17 @@
 {
-  "name": "jot-rss",
+  "name": "apostrophe-rss",
   "version": "0.0.1",
-  "description": "Adds an RSS feed widget to the Jot rich content editor",
+  "description": "Adds an RSS feed widget to the Apostrophe content management system",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/punkave/jot-rss.git"
+    "url": "git://github.com/punkave/apostrophe-rss.git"
   },
   "keywords": [
+    "apostrophe",
     "jot",
     "rich",
     "text",
