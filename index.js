@@ -3,7 +3,7 @@ var feedparser = require('feedparser');
 var cache = {};
 
 module.exports = function(options) {
-  new widget(options);
+  return new widget(options);
 };
 
 function widget(options) {
@@ -39,6 +39,8 @@ function widget(options) {
       if (!item.feed.match(/^https?\:\/\//)) {
         item.feed = 'http://' + item.feed;
       }
+      item.limit = parseInt(item.limit);
+      console.log(item);
     },
     render: function(data) {
       return apos.partial('rss.html', data, __dirname + '/views');
@@ -58,6 +60,9 @@ function widget(options) {
       } 
 
       feedparser.parseUrl(item.feed).on('complete', function(meta, articles) {
+        articles = articles.slice(0, item.limit);
+        console.log('SLICED: ', articles.length);
+
         // map is native in node
         item._entries = articles.map(function(article) {
           return {

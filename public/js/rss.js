@@ -11,16 +11,14 @@ apos.widgetTypes.rss = {
     }
 
     self.afterCreatingEl = function() {
-      self.$feed = self.$el.find('.apos-rss-feed');
+      self.$feed = self.$el.find('[name="feed"]');
       self.$feed.val(self.data.feed);
+      self.$limit = self.$el.find('[name="limit"]');
+      self.$limit.val(self.data.limit);
       setTimeout(function() {
         self.$feed.focus();
         self.$feed.setSelection(0, 0);
       }, 500);
-      self.$el.find('.apos-preview-button').click(function() {
-        self.preview();
-        return false;
-      });
     };
 
     self.type = 'rss';
@@ -33,6 +31,7 @@ apos.widgetTypes.rss = {
       self.exists = !!self.$feed.val();
       if (self.exists) {
         self.data.feed = self.$feed.val();
+        self.data.limit = self.$limit.val();        
       }
       return callback();
     }

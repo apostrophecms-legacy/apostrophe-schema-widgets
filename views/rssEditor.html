@@ -13,5 +13,12 @@
 {% endblock %}
 
 {% block formBody %}
-  <input class="apos-rss-feed" />
+  <label>Feed: <input name="feed" class="apos-rss-feed" /></label>
+  <label>Limit: <select name="limit">
+    <option>1</option>
+    <option>3</option>
+    <option>5</option>
+    <option>10</option>
+    <option>20</option>
+  </select></label>
 {% endblock %}
