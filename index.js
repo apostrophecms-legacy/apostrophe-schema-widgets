@@ -10,23 +10,26 @@ function widget(options) {
   var apos = options.apos;
   var app = options.app;
   var self = this;
-  
+
   var lifetime = options.lifetime ? options.lifetime : 60000;
+
+  self.pushAsset = function(type, name) {
+    return apos.pushAsset(type, name, __dirname, '/apos-rss');
+  };
 
   // This widget should be part of the default set of widgets for areas
   // (this isn't mandatory)
   apos.defaultControls.push('rss');
 
   // Include our editor template in the markup when aposTemplates is called
-  apos.templates.push(__dirname + '/views/rssEditor');
+  self.pushAsset('template', 'rssEditor');
 
   // Make sure that aposScripts and aposStylesheets summon our assets
 
   // We need the editor for RSS feeds. (TODO: consider separate script lists for
   // resources needed also by non-editing users.)
-  apos.scripts.push('/apos-rss/js/rss.js');
-
-  apos.stylesheets.push('/apos-rss/css/rss.css');
+  self.pushAsset('script', 'rss');
+  self.pushAsset('stylesheet', 'rss');
 
   // Serve our assets
   app.get('/apos-rss/*', apos.static(__dirname + '/public'));
@@ -43,7 +46,7 @@ function widget(options) {
       console.log(item);
     },
     render: function(data) {
-      return apos.partial('rss.html', data, __dirname + '/views');
+      return apos.partial('rss', data, __dirname + '/views');
     },
 
     // Asynchronously load the actual RSS feed
