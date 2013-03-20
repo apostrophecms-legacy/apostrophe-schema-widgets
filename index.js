@@ -60,7 +60,7 @@ function widget(options) {
       if (cache.hasOwnProperty(item.feed) && ((cache[item.feed].when + lifetime) > now.getTime())) {
         item._entries = cache[item.feed].data;
         return callback();
-      } 
+      }
 
       feedparser.parseUrl(item.feed).on('complete', function(meta, articles) {
         articles = articles.slice(0, item.limit);
