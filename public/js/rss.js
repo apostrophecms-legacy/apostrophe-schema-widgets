@@ -31,7 +31,7 @@ apos.widgetTypes.rss = {
       self.exists = !!self.$feed.val();
       if (self.exists) {
         self.data.feed = self.$feed.val();
-        self.data.limit = self.$limit.val();        
+        self.data.limit = self.$limit.val();
       }
       return callback();
     }
