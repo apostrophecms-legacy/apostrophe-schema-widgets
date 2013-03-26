@@ -53,7 +53,7 @@ function widget(options) {
     // The properties you add should start with an _ to denote that
     // they shouldn't become data attributes or get stored back to MongoDB
 
-    load: function(item, callback) {
+    load: function(req, item, callback) {
       item._entries = [];
 
       var now = new Date();
