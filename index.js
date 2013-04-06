@@ -38,6 +38,7 @@ function widget(options) {
     widget: true,
     label: 'RSS Feed',
     css: 'rss',
+    icon: 'rss',
     sanitize: function(item) {
       if (!item.feed.match(/^https?\:\/\//)) {
         item.feed = 'http://' + item.feed;
