@@ -1,5 +1,5 @@
 var feedparser = require('feedparser');
-
+var extend = require('extend');
 var cache = {};
 
 module.exports = function(options) {
@@ -13,8 +13,14 @@ function widget(options) {
 
   var lifetime = options.lifetime ? options.lifetime : 60000;
 
-  self.pushAsset = function(type, name) {
-    return apos.pushAsset(type, name, __dirname, '/apos-rss');
+  self.pushAsset = function(type, name, optionsArg) {
+    var options = {};
+    if (optionsArg) {
+      extend(true, options, optionsArg);
+    }
+    options.fs = __dirname;
+    options.web = '/apos-rss';
+    return apos.pushAsset(type, name, options);
   };
 
   // This widget should be part of the default set of widgets for areas
@@ -22,14 +28,14 @@ function widget(options) {
   apos.defaultControls.push('rss');
 
   // Include our editor template in the markup when aposTemplates is called
-  self.pushAsset('template', 'rssEditor');
+  self.pushAsset('template', 'rssEditor', { when: 'user' });
 
   // Make sure that aposScripts and aposStylesheets summon our assets
 
   // We need the editor for RSS feeds. (TODO: consider separate script lists for
   // resources needed also by non-editing users.)
-  self.pushAsset('script', 'rss');
-  self.pushAsset('stylesheet', 'rss');
+  self.pushAsset('script', 'editor', { when: 'user' });
+  self.pushAsset('stylesheet', 'content', { when: 'always' });
 
   // Serve our assets
   app.get('/apos-rss/*', apos.static(__dirname + '/public'));
@@ -43,8 +49,7 @@ function widget(options) {
       if (!item.feed.match(/^https?\:\/\//)) {
         item.feed = 'http://' + item.feed;
       }
-      item.limit = parseInt(item.limit);
-      console.log(item);
+      item.limit = parseInt(item.limit, 10);
     },
     render: function(data) {
       return apos.partial('rss', data, __dirname + '/views');
@@ -65,7 +70,6 @@ function widget(options) {
 
       feedparser.parseUrl(item.feed).on('complete', function(meta, articles) {
         articles = articles.slice(0, item.limit);
-        console.log('SLICED: ', articles.length);
 
         // map is native in node
         item._entries = articles.map(function(article) {

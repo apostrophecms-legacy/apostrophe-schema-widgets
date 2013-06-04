@@ -1,0 +1,7 @@
+.apos-widget.apos-rss{background-color:#eee;text-align:left;}
+.apos-rss-entries{list-style:none;}
+.apos-rss-entry{padding:0.5em;border:0.2em solid #ddd;border-radius:0.6em;margin-bottom:10px;}
+.apos-rss-meta{list-style:none;}
+.apos-rss-title{font-size:125%;}
+.apos-rss-date{font-size:75%;}
+.apos-rss-error{background-color:#fee;font-size:125%;padding:0.5em;}

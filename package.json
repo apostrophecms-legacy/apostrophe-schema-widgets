@@ -22,7 +22,8 @@
   "author": "P'unk Avenue punkave.com",
   "license": "MIT",
   "dependencies": {
-    "feedparser": "~0.11.0"
+    "feedparser": "~0.11.0",
+    "extend": "~1.1.3"
   },
   "devDependencies": {}
 }
