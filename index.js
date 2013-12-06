@@ -65,8 +65,11 @@ function Construct(options, callback) {
       item._entries = [];
 
       var now = new Date();
-      if (cache.hasOwnProperty(item.feed) && ((cache[item.feed].when + lifetime) > now.getTime())) {
-        item._entries = cache[item.feed].data;
+      // Take all properties into account, not just the feed, so the cache
+      // doesn't prevent us from seeing a change in the limit property right away
+      var key = JSON.stringify({ feed: item.feed, limit: item.limit });
+      if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
+        item._entries = cache[key].data;
         return callback();
       }
 
@@ -82,7 +85,7 @@ function Construct(options, callback) {
           };
         });
         // Cache for fast access later
-        cache[item.feed] = { when: now.getTime(), data: item._entries };
+        cache[key] = { when: now.getTime(), data: item._entries };
         return callback();
       }).on('error', function(error) {
         item._failed = true;

@@ -13,16 +13,16 @@ function AposRssWidgetEditor(options) {
   self.type = 'rss';
   options.template = '.apos-rss-editor';
 
+  AposWidgetEditor.call(self, options);
+
   self.prePreview = getFeed;
   self.preSave = getFeed;
-
-  AposWidgetEditor.call(self, options);
 
   self.afterCreatingEl = function() {
     self.$feed = self.$el.find('[name="feed"]');
     self.$feed.val(self.data.feed);
     self.$limit = self.$el.find('[name="limit"]');
-    self.$limit.val(self.data.limit);
+    self.$limit.val(self.data.limit || 10);
     setTimeout(function() {
       self.$feed.focus();
       self.$feed.setSelection(0, 0);
@@ -34,6 +34,7 @@ function AposRssWidgetEditor(options) {
     if (self.exists) {
       self.data.feed = self.$feed.val();
       self.data.limit = self.$limit.val();
+      apos.log('limit: ' + self.data.limit);
     }
     return callback();
   }
