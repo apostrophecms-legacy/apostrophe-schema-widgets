@@ -34,7 +34,6 @@ function AposRssWidgetEditor(options) {
     if (self.exists) {
       self.data.feed = self.$feed.val();
       self.data.limit = self.$limit.val();
-      apos.log('limit: ' + self.data.limit);
     }
     return callback();
   }
