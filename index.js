@@ -12,18 +12,11 @@ function Construct(options, callback) {
   var apos = options.apos;
   var app = options.app;
   var self = this;
-
+  self._apos = apos;
+  self._app = app;
   var lifetime = options.lifetime ? options.lifetime : 60000;
 
-  self.pushAsset = function(type, name, optionsArg) {
-    var options = {};
-    if (optionsArg) {
-      extend(true, options, optionsArg);
-    }
-    options.fs = __dirname;
-    options.web = '/apos-rss';
-    return apos.pushAsset(type, name, options);
-  };
+  self._apos.mixinModuleAssets(self, 'rss', __dirname, options);
 
   // This widget should be part of the default set of widgets for areas
   // (this isn't mandatory)
@@ -38,9 +31,6 @@ function Construct(options, callback) {
   // resources needed also by non-editing users.)
   self.pushAsset('script', 'editor', { when: 'user' });
   self.pushAsset('stylesheet', 'content', { when: 'always' });
-
-  // Serve our assets
-  app.get('/apos-rss/*', apos.static(__dirname + '/public'));
 
   apos.itemTypes.rss = {
     widget: true,
