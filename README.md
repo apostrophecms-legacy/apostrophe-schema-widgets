@@ -57,7 +57,7 @@ Right away, this is useful. But it's a lot more useful if you use the "array" fe
 In `app.js`:
 
 ```javascript
-`apostrophe-schema-widgets`: {
+'apostrophe-schema-widgets': {
   widgets: [
     {
       name: 'prettyLinks',
