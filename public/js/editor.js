@@ -3,7 +3,6 @@
 // After apos.data is available
 $(function() {
   _.each(apos.data.schemaWidgets, function(info) {
-    console.log(info.name);
     apos.widgetTypes[info.name] = {
       label: info.label,
       editor: function(options) {

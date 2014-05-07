@@ -52,7 +52,6 @@ function Construct(options, callback) {
       // those nested in arrays
       return callback(null);
     };
-    console.log('adding ' + widget.name);
     apos.addWidgetType(widget.name, widget);
   });
 
