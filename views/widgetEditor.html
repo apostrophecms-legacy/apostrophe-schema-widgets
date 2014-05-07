@@ -1,0 +1,20 @@
+{% extends "baseWidgetEditor.html" %}
+{% include "schemas:schemaMacros.html" %}
+
+{% block widgetVars %}
+  {% set widgetClass = 'apos-' + widget.css + '-editor' %}
+{% endblock %}
+
+{% block title %}
+  {{ widget.label | e }}
+{% endblock %}
+
+{% block instructions %}
+  {{ widget.instructions | e }}
+{% endblock %}
+
+{% block formBody %}
+  <div data-fields>
+    {{ schemaFields(widget.schema) }}
+  </div>
+{% endblock %}

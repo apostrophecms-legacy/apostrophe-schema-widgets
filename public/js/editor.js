@@ -1,44 +1,50 @@
-// @class Editor for RSS feed widgets
+// @class Editor for all schema widgets
 
-function AposRssWidgetEditor(options) {
-  var self = this;
+// After apos.data is available
+$(function() {
+  _.each(apos.data.schemaWidgets, function(info) {
+    console.log(info.name);
+    apos.widgetTypes[info.name] = {
+      label: info.label,
+      editor: function(options) {
+        var self = this;
 
-  if (!options.messages) {
-    options.messages = {};
-  }
-  if (!options.messages.missing) {
-    options.messages.missing = 'Paste in an RSS feed URL first.';
-  }
+        self.type = info.name;
+        options.template = '.apos-' + info.css + '-editor';
 
-  self.type = 'rss';
-  options.template = '.apos-rss-editor';
+        AposWidgetEditor.call(self, options);
 
-  AposWidgetEditor.call(self, options);
+        self.prePreview = function(callback) {
+          // The preview call at startup just causes false negatives for
+          // the "required" fields, and we don't do preview in the
+          // widget editors anymore anyway
+          // return self.debrief(callback);
+        };
 
-  self.prePreview = getFeed;
-  self.preSave = getFeed;
+        self.preSave = function(callback) {
+          return self.debrief(callback);
+        };
 
-  self.afterCreatingEl = function() {
-    self.$feed = self.$el.find('[name="feed"]');
-    self.$feed.val(self.data.feed);
-    self.$limit = self.$el.find('[name="limit"]');
-    self.$limit.val(self.data.limit || 10);
-    setTimeout(function() {
-      self.$feed.focus();
-      self.$feed.setSelection(0, 0);
-    }, 500);
-  };
+        self.afterCreatingEl = function() {
+          self.$fields = aposSchemas.findSafe(self.$el, '[data-fields]');
+          aposSchemas.populateFields(self.$fields, info.schema, self.data, function() {
+            // That's nice
+          });
+        };
 
-  function getFeed(callback) {
-    self.exists = !!self.$feed.val();
-    if (self.exists) {
-      self.data.feed = self.$feed.val();
-      self.data.limit = self.$limit.val();
-    }
-    return callback();
-  }
-}
+        self.debrief = function(callback) {
+          self.exists = false;
+          return aposSchemas.convertFields(self.$fields, info.schema, self.data, function(err) {
+            if (err) {
+              aposSchemas.scrollToError($piece);
+              return;
+            }
+            self.exists = true;
+            return callback(null);
+          });
+        };
+      }
+    };
 
-AposRssWidgetEditor.label = 'RSS Feed';
-
-apos.addWidgetType('rss');
+  });
+});

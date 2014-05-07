@@ -1,6 +1,4 @@
-var feedparser = require('feedparser');
-var extend = require('extend');
-var cache = {};
+var _ = require('lodash');
 
 module.exports = function(options, callback) {
   return new Construct(options, callback);
@@ -11,76 +9,52 @@ module.exports.Construct = Construct;
 function Construct(options, callback) {
   var apos = options.apos;
   var app = options.app;
+  var schemas = options.schemas;
   var self = this;
   self._apos = apos;
   self._app = app;
-  var lifetime = options.lifetime ? options.lifetime : 60000;
+  self._schemas = schemas;
+  self._options = options;
+  self._apos.mixinModuleAssets(self, 'schema-widgets', __dirname, options);
 
-  self._apos.mixinModuleAssets(self, 'rss', __dirname, options);
+  self._apos.pushGlobalData({
+    schemaWidgets: _.map(options.widgets, function(info) {
+      info.css = info.css || apos.cssName(info.name);
+      return info;
+    })
+  });
 
-  // This widget should be part of the default set of widgets for areas
-  // (this isn't mandatory)
-  apos.defaultControls.push('rss');
+  // widgetEditors.html will spit out a frontend DOM template for editing
+  // each widget type we register
+  self.pushAsset('template', 'widgetEditors', { when: 'user', data: options });
 
-  // Include our editor template in the markup when aposTemplates is called
-  self.pushAsset('template', 'rssEditor', { when: 'user' });
-
-  // Make sure that aposScripts and aposStylesheets summon our assets
-
-  // We need the editor for RSS feeds. (TODO: consider separate script lists for
-  // resources needed also by non-editing users.)
   self.pushAsset('script', 'editor', { when: 'user' });
-  self.pushAsset('stylesheet', 'content', { when: 'always' });
 
-  self.widget = true;
-  self.label = options.label || 'RSS Feed';
-  self.css = options.css || 'rss';
-  self.icon = options.icon || 'rss';
-  self.sanitize = function(item) {
-    if (!item.feed.match(/^https?\:\/\//)) {
-      item.feed = 'http://' + item.feed;
-    }
-    item.limit = parseInt(item.limit, 10);
-  };
-  self.renderWidget = function(data) {
-    return self.render('rss', data);
-  };
-  self.load = function(req, item, callback) {
-    // Asynchronously load the actual RSS feed
-    // The properties you add should start with an _ to denote that
-    // they shouldn't become data attributes or get stored back to MongoDB
-    item._entries = [];
-
-    var now = new Date();
-    // Take all properties into account, not just the feed, so the cache
-    // doesn't prevent us from seeing a change in the limit property right away
-    var key = JSON.stringify({ feed: item.feed, limit: item.limit });
-    if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
-      item._entries = cache[key].data;
-      return callback();
-    }
-
-    feedparser.parseUrl(item.feed).on('complete', function(meta, articles) {
-      articles = articles.slice(0, item.limit);
-
-      // map is native in node
-      item._entries = articles.map(function(article) {
-        return {
-          title: article.title,
-          body: article.description,
-          date: article.pubDate
-        };
+  _.each(options.widgets, function(options) {
+    var widget = {};
+    apos.defaultControls.push(options.name);
+    widget.name = options.name;
+    widget.widget = true;
+    widget.label = options.label || options.name;
+    widget.css = options.css || apos.cssName(options.name);
+    widget.icon = options.icon;
+    widget.sanitize = function(req, item, callback) {
+      var object = {};
+      return schemas.convertFields(req, options.schema, 'form', item, object, function(err) {
+        return callback(err, object);
       });
-      // Cache for fast access later
-      cache[key] = { when: now.getTime(), data: item._entries };
-      return callback();
-    }).on('error', function(error) {
-      item._failed = true;
-      return callback();
-    });
-  };
-
-  apos.addWidgetType('rss', self);
+    };
+    widget.renderWidget = function(data) {
+      return self.render(widget.name, data);
+    };
+    widget.load = function(req, item, callback) {
+      // TODO: carry out joins in the schema, including
+      // those nested in arrays
+      return callback(null);
+    };
+    console.log('adding ' + widget.name);
+    apos.addWidgetType(widget.name, widget);
+  });
 
   return setImmediate(function() { return callback(null); });
 }

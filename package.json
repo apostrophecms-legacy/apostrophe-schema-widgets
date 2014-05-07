@@ -1,29 +1,23 @@
 {
-  "name": "apostrophe-rss",
-  "version": "0.5.5",
-  "description": "Adds an RSS feed widget to the Apostrophe content management system",
+  "name": "apostrophe-schema-widgets",
+  "version": "0.5.0",
+  "description": "An easy form widget builder for the Apostrophe content management system",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/punkave/apostrophe-rss.git"
+    "url": "git://github.com/punkave/apostrophe-schema-widgets.git"
   },
   "keywords": [
     "apostrophe",
-    "jot",
-    "rich",
-    "text",
-    "rich",
-    "content",
-    "rss"
+    "forms"
   ],
   "author": "P'unk Avenue punkave.com",
   "license": "MIT",
   "dependencies": {
-    "feedparser": "~0.11.0",
-    "extend": "~1.1.3"
+    "lodash": "~2.4.1"
   },
   "devDependencies": {}
 }
