@@ -20,16 +20,19 @@ In `app.js`, just configure the module:
     {
       name: 'prettyLink',
       label: 'Pretty Link',
+      instructions: 'Enter a label and paste a URL to create a link.',
       schema: [
         {
           name: 'label',
           type: 'string',
-          label: 'Label'
+          label: 'Label',
+          required: true
         },
         {
           name: 'url',
           type: 'url',
-          value: 'URL'
+          label: 'URL',
+          required: true
         }
       ]
     }
@@ -59,21 +62,23 @@ In `app.js`:
     {
       name: 'prettyLinks',
       label: 'Pretty Links',
+      instructions: 'Click "add" to add your first link. Enter a label and paste a URL for each link.',
       schema: [
         {
           name: 'links',
           type: 'array',
-          label: 'Links',
           schema: [
             {
               name: 'label',
               type: 'string',
-              label: 'Label'
+              label: 'Label',
+              required: true
             },
             {
               name: 'url',
               type: 'url',
-              value: 'URL'
+              label: 'URL',
+              required: true
             }
           ]
         }
