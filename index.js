@@ -47,10 +47,20 @@ function Construct(options, callback) {
     widget.renderWidget = function(data) {
       return self.render(widget.name, data);
     };
+
     widget.load = function(req, item, callback) {
-      // TODO: carry out joins in the schema, including
-      // those nested in arrays
-      return callback(null);
+      if (req.aposSchemaWidgetLoading) {
+        // Refuse to do perform joins through two levels of schema widgets.
+        // This prevents a number of infinite loop scenarios. For this to
+        // work properly page loaders should continue to run in series
+        // rather than in parallel. -Tom
+        return setImmediate(callback());
+      }
+      req.aposSchemaWidgetLoading = true;
+      return self._schemas.join(req, options.schema, item, undefined, function(err) {
+        req.aposSchemaWidgetLoading = false;
+        return setImmediate(_.partial(callback, err));
+      });
     };
     apos.addWidgetType(widget.name, widget);
   });
