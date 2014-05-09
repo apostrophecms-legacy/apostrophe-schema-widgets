@@ -97,3 +97,13 @@ And in `lib/modules/apostrophe-schema-widgets/views/prettyLinks.html`:
   {% endfor %}
 </ul>
 ```
+
+## Joins in Schema Widgets
+
+They work exactly like joins in snippet schemas.
+
+If the current page contains a schema widget which results in a join with another page or snippet that also contains a schema widget, the second schema widget does *not* complete its joins. This is necessary to prevent infinite loops.
+
+If you need nested joins, consider adding your joins to the [schema of a fancy page](https://github.com/punkave/apostrophe-fancy-pages) rather than using schema widgets. If you take this approach you can [use the `withJoins` option](https://github.com/punkave/apostrophe-schemas#nested-joins-you-gotta-be-explicit).
+
+
