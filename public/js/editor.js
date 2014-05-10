@@ -24,11 +24,9 @@ $(function() {
           return self.debrief(callback);
         };
 
-        self.afterCreatingEl = function() {
+        self.afterCreatingEl = function(callback) {
           self.$fields = aposSchemas.findSafe(self.$el, '[data-fields]');
-          aposSchemas.populateFields(self.$fields, info.schema, self.data, function() {
-            // That's nice
-          });
+          return aposSchemas.populateFields(self.$fields, info.schema, self.data, callback);
         };
 
         self.debrief = function(callback) {
