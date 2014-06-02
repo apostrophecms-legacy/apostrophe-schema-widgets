@@ -33,7 +33,7 @@ $(function() {
           self.exists = false;
           return aposSchemas.convertFields(self.$fields, info.schema, self.data, function(err) {
             if (err) {
-              aposSchemas.scrollToError($piece);
+              aposSchemas.scrollToError(self.$el);
               return;
             }
             self.exists = true;
