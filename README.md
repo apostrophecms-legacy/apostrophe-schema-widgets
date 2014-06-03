@@ -106,4 +106,40 @@ If the current page contains a schema widget which results in a join with anothe
 
 If you need nested joins, consider adding your joins to the [schema of a fancy page](https://github.com/punkave/apostrophe-fancy-pages) rather than using schema widgets. If you take this approach you can [use the `withJoins` option](https://github.com/punkave/apostrophe-schemas#nested-joins-you-gotta-be-explicit).
 
+## Extending Schema Widgets
+
+If you need a custom loader to fetch more data, just subclass the module in `lib/modules/apostrophe-schema-widgets/index.js`. Here's an example in which we want to do extra work for the schema widget named `menuBuilder`:
+
+```javascript
+
+module.exports = schemaWidgets;
+
+function schemaWidgets(options, callback) {
+  return new schemaWidgets.SchemaWidgets(options, callback);
+}
+
+schemaWidgets.SchemaWidgets = function(options, callback) {
+  var self = this;
+
+  module.exports.Super.call(this, options, null);
+
+  var superLoad = self.widgets.menuBuilder.load;
+  self.widgets.menuBuilder.load = function(req, item, callback) {
+    return superLoad(req, item, function(err) {
+      if (err) {
+        return callback(err);
+      }
+
+      // Do your custom work here, add properties
+      // to the item, then...
+
+      return callback(null);
+    });
+  };
+
+  if (callback) {
+    process.nextTick(function() { return callback(null); });
+  }
+};
+```
 

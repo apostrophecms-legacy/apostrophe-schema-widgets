@@ -11,10 +11,12 @@ function Construct(options, callback) {
   var app = options.app;
   var schemas = options.schemas;
   var self = this;
+  self.widgets = {};
   self._apos = apos;
   self._app = app;
   self._schemas = schemas;
   self._options = options;
+  self._pages = options.pages;
   self._apos.mixinModuleAssets(self, 'schema-widgets', __dirname, options);
 
   self._apos.pushGlobalData({
@@ -63,7 +65,8 @@ function Construct(options, callback) {
       });
     };
     apos.addWidgetType(widget.name, widget);
+    self.widgets[widget.name] = widget;
   });
 
-  return setImmediate(function() { return callback(null); });
+  return setImmediate(function() { return callback && callback(null); });
 }
