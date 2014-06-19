@@ -31,6 +31,7 @@ function Construct(options, callback) {
   self.pushAsset('template', 'widgetEditors', { when: 'user', data: options });
 
   self.pushAsset('script', 'editor', { when: 'user' });
+  self.pushAsset('stylesheet', 'editor', { when: 'user' });
 
   _.each(options.widgets, function(options) {
     var widget = {};

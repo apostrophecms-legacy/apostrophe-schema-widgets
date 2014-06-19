@@ -14,7 +14,15 @@
 {% endblock %}
 
 {% block formBody %}
-  <div data-fields>
-    {{ schemaFields(widget.schema) }}
+  <div class="apos-schema-widget-tab-buttons">
+    <a href="#" data-tab-button="edit" class="apos-schema-widget-tab-button">Edit</a>
+    <a href="#" data-tab-button="preview" class="apos-schema-widget-tab-button">Preview</a>
+  </div>
+  <div class="apos-schema-widget-tab" data-tab="edit">
+    <div data-fields>
+      {{ schemaFields(widget.schema) }}
+    </div>
+  </div>
+  <div class="apos-schema-widget-tab" data-tab="preview">
   </div>
 {% endblock %}
