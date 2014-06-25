@@ -1,28 +1,35 @@
 {% extends "baseWidgetEditor.html" %}
 {% include "schemas:schemaMacros.html" %}
 
-{% block widgetVars %}
-  {% set widgetClass = 'apos-' + widget.css + '-editor apos-ui apos-schema-widget' %}
+{% block modalClass %}
+  apos-{{widget.css}}-editor apos-schema-widget apos-ui-modal-no-sidebar
 {% endblock %}
 
-{% block title %}
+{% block modalLabel %}
   {{ widget.label | e }}
 {% endblock %}
 
-{% block instructions %}
-  {{ widget.instructions | e }}
+{% block modalInstructions %}
+  <p>{{ widget.instructions | e }}</p>
 {% endblock %}
 
 {% block formBody %}
-  <div class="apos-schema-widget-tab-buttons">
-    <a href="#" data-tab-button="edit" class="apos-schema-widget-tab-button">Edit</a>
-    <a href="#" data-tab-button="preview" class="apos-schema-widget-tab-button">Preview</a>
-  </div>
-  <div class="apos-schema-widget-tab" data-tab="edit">
-    <div data-fields>
-      {{ schemaFields(widget.schema) }}
+  <div class="apos-modal-tabs">
+    <div class="apos-modal-tab-control">
+      <div data-tab-button="edit" class="apos-modal-tab-title apos-active" >
+        Edit
+      </div>
+      <div data-tab-button="preview" class="apos-modal-tab-title">
+        Preview
+      </div>
     </div>
-  </div>
-  <div class="apos-schema-widget-tab" data-tab="preview">
+
+    <div class="apos-modal-tab apos-active" data-tab="edit">
+      <div data-fields>
+        {{ schemaFields(widget.schema) }}
+      </div>
+    </div>
+    <div class="apos-modal-tab" data-tab="preview">
+    </div>
   </div>
 {% endblock %}
