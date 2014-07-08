@@ -56,7 +56,10 @@ $(function() {
           });
 
           self.$fields = aposSchemas.findSafe(self.$el, '[data-fields]');
-          return aposSchemas.populateFields(self.$fields, info.schema, self.data, callback);
+          return aposSchemas.populateFields(self.$fields, info.schema, self.data, function() {
+            apos.emit('widgetModalReady', self);
+            return callback();
+          });
         };
 
         self.refreshPreview = function(callback) {
