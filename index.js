@@ -47,8 +47,13 @@ function Construct(options, callback) {
         return callback(err, object);
       });
     };
+
     widget.renderWidget = function(data) {
       return self.render(widget.name, data);
+    };
+
+    widget.empty = function(data) {
+      return self._schemas.empty(options.schema, data);
     };
 
     widget.load = function(req, item, callback) {
