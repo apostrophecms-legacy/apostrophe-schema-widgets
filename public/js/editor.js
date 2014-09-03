@@ -65,7 +65,10 @@ $(function() {
         self.refreshPreview = function(callback) {
           // Validate first, then pass that data to the server
           // to get a nice rendering of it
-          return self.debrief(function() {
+          return self.debrief(function(err) {
+            if (err) {
+              return callback && callback(err);
+            }
             return $.jsonCall(
               '/apos/render-widget',
               { dataType: 'html' },
@@ -101,7 +104,7 @@ $(function() {
           return aposSchemas.convertFields(self.$fields, info.schema, self.data, function(err) {
             if (err) {
               aposSchemas.scrollToError(self.$el);
-              return;
+              return callback('error');
             }
             self.exists = true;
             return callback(null);
