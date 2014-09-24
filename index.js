@@ -44,7 +44,13 @@ function Construct(options, callback) {
     widget.sanitize = function(req, item, callback) {
       var object = {};
       return schemas.convertFields(req, options.schema, 'form', item, object, function(err) {
-        return callback(err, object);
+
+        if (err) {
+          return callback(err, object);
+        } 
+        return widget.afterConvertFields(req, object, function(e) {
+          return callback(e, object);
+        });
       });
     };
 
@@ -54,6 +60,10 @@ function Construct(options, callback) {
 
     widget.empty = function(data) {
       return self._schemas.empty(options.schema, data);
+    };
+
+    widget.afterConvertFields = function(req, object, callback) {
+      return callback(null);
     };
 
     widget.load = function(req, item, callback) {

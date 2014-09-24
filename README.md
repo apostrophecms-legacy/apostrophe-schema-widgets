@@ -143,3 +143,12 @@ schemaWidgets.SchemaWidgets = function(options, callback) {
 };
 ```
 
+You also have `afterConvertFields` available to you for treating fields after they are sanitized.  You can use it in `index.js` like this:
+
+```javascript
+self.widgets.menuBuilder.afterConvertFields = function(req, item, callback) {
+  // Do stuff to your fields here
+  return callback(null);
+}
+```
+
