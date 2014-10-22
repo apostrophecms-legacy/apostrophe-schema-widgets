@@ -18,6 +18,7 @@ function Construct(options, callback) {
   self._options = options;
   self._pages = options.pages;
   self._apos.mixinModuleAssets(self, 'schema-widgets', __dirname, options);
+  self._action = '/apos-schema-widgets';
 
   self._apos.pushGlobalData({
     schemaWidgets: _.map(options.widgets, function(info) {
