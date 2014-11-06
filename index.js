@@ -1,3 +1,5 @@
+/* jshint node:true */
+
 var _ = require('lodash');
 
 module.exports = function(options, callback) {
@@ -75,8 +77,20 @@ function Construct(options, callback) {
         // rather than in parallel. -Tom
         return setImmediate(callback());
       }
+      if (req.deferredLoads) {
+        if (!req.deferredLoads[options.name]) {
+          req.deferredLoads[options.name] = [];
+          req.deferredLoaders[options.name] = widget.loadNow;
+        }
+        req.deferredLoads[options.name].push(item);
+        return setImmediate(callback);
+      }
+      return widget.loadNow(req, [ item ], callback);
+    };
+
+    widget.loadNow = function(req, items, callback) {
       req.aposSchemaWidgetLoading = true;
-      return self._schemas.join(req, options.schema, item, undefined, function(err) {
+      return self._schemas.join(req, options.schema, items, undefined, function(err) {
         req.aposSchemaWidgetLoading = false;
         return setImmediate(_.partial(callback, err));
       });
