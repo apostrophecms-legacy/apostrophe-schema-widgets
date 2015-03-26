@@ -75,7 +75,7 @@ function Construct(options, callback) {
         // This prevents a number of infinite loop scenarios. For this to
         // work properly page loaders should continue to run in series
         // rather than in parallel. -Tom
-        return setImmediate(callback());
+        return setImmediate(callback);
       }
       if (req.deferredLoads) {
         if (!req.deferredLoads[options.name]) {
