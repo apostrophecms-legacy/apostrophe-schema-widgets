@@ -44,6 +44,13 @@ function Construct(options, callback) {
     widget.label = options.label || options.name;
     widget.css = options.css || apos.cssName(options.name);
     widget.icon = options.icon;
+
+    if (_.find(options.schema, function(field) {
+      return (field.name === 'content');
+    })) {
+      console.error('\n\nERROR: apostrophe-schema-widgets schema fields must not be named "content". Fix your \"' + widget.name + '\" widget definition.\n\n');
+    }
+
     widget.sanitize = function(req, item, callback) {
       var object = {};
       return schemas.convertFields(req, options.schema, 'form', item, object, function(err) {
