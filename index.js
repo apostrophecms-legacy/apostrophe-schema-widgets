@@ -14,6 +14,7 @@ function Construct(options, callback) {
   var schemas = options.schemas;
   var self = this;
   self.widgets = {};
+  self.toggleUi = options.toggleUi || false;
   self._apos = apos;
   self._app = app;
   self._schemas = schemas;
@@ -27,6 +28,11 @@ function Construct(options, callback) {
       info.css = info.css || apos.cssName(info.name);
       return info;
     })
+  });
+  self._apos.pushGlobalData({
+    schemaWidgetsUi: {
+      toggleUi: self.toggleUi
+    }
   });
 
   // widgetEditors.html will spit out a frontend DOM template for editing
@@ -50,7 +56,7 @@ function Construct(options, callback) {
 
         if (err) {
           return callback(err, object);
-        } 
+        }
         return widget.afterConvertFields(req, object, function(e) {
           return callback(e, object);
         });
