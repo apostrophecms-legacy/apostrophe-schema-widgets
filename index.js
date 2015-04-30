@@ -50,6 +50,13 @@ function Construct(options, callback) {
     widget.label = options.label || options.name;
     widget.css = options.css || apos.cssName(options.name);
     widget.icon = options.icon;
+
+    if (_.find(options.schema, function(field) {
+      return (field.name === 'content');
+    })) {
+      console.error('\n\nERROR: apostrophe-schema-widgets schema fields must not be named "content". Fix your \"' + widget.name + '\" widget definition.\n\n');
+    }
+
     widget.sanitize = function(req, item, callback) {
       var object = {};
       return schemas.convertFields(req, options.schema, 'form', item, object, function(err) {
@@ -81,7 +88,7 @@ function Construct(options, callback) {
         // This prevents a number of infinite loop scenarios. For this to
         // work properly page loaders should continue to run in series
         // rather than in parallel. -Tom
-        return setImmediate(callback());
+        return setImmediate(callback);
       }
       if (req.deferredLoads) {
         if (!req.deferredLoads[options.name]) {
