@@ -24,25 +24,15 @@ function Construct(options, callback) {
   self._action = '/apos-schema-widgets';
 
   self._apos.pushGlobalData({
-    schemaWidgets: _.map(options.widgets, function(info) {
-      info.css = info.css || apos.cssName(info.name);
-      return info;
-    })
-  });
-  self._apos.pushGlobalData({
     schemaWidgetsUi: {
       toggleUi: self.toggleUi
     }
   });
 
-  // widgetEditors.html will spit out a frontend DOM template for editing
-  // each widget type we register
-  self.pushAsset('template', 'widgetEditors', { when: 'user', data: options });
-
   self.pushAsset('script', 'editor', { when: 'user' });
   self.pushAsset('stylesheet', 'editor', { when: 'user' });
 
-  _.each(options.widgets, function(options) {
+  self.registerWidget = function(options) {
     var widget = {};
     apos.defaultControls.push(options.name);
     widget.name = options.name;
@@ -70,7 +60,7 @@ function Construct(options, callback) {
       });
     };
 
-    widget.renderWidget = function(data) {
+    widget.renderWidget = options.renderWidget || function(data) {
       return self.render(widget.name, data);
     };
 
@@ -110,7 +100,21 @@ function Construct(options, callback) {
     };
     apos.addWidgetType(widget.name, widget);
     self.widgets[widget.name] = widget;
-  });
+    var data = {
+      schemaWidgets: {}
+    };
+    options.css = options.css || apos.cssName(options.name);
+    data.schemaWidgets[widget.name] = options;
+    self._apos.pushGlobalData(data);
+    // originally designed to output templates for many widgets at once, this template
+    // can be repurposed to push them one at a time
+    self.pushAsset('template', 'widgetEditors', { when: 'user', data: { widgets: [ options ] } });
 
-  return setImmediate(function() { return callback && callback(null); });
+  };
+
+  _.each(options.widgets, self.registerWidget);
+
+  if (callback) {
+    process.nextTick(function() { return callback(null); });
+  }
 }
