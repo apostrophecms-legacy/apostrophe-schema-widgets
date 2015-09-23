@@ -63,6 +63,7 @@ In `app.js`:
       name: 'prettyLinks',
       label: 'Pretty Links',
       instructions: 'Click "add" to add your first link. Enter a label and paste a URL for each link.',
+      type: 'array',
       schema: [
         {
           name: 'links',
