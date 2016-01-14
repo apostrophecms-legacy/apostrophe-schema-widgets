@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-schema-widgets",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "description": "An easy form widget builder for the Apostrophe content management system",
   "main": "index.js",
   "scripts": {
