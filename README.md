@@ -144,6 +144,16 @@ schemaWidgets.SchemaWidgets = function(options, callback) {
 };
 ```
 
+If you need to fetch more data that is dependent on all of the joins being hydrated,
+you can execute custom code after the widget is finished loading in your `index.js`:
+
+```javascript
+self.widgets.menuBuilder.afterLoad = function(req, item, callback) {
+  // Fetch more data
+  return callback(null);
+}
+```
+
 You also have `afterConvertFields` available to you for treating fields after they are sanitized.  You can use it in `index.js` like this:
 
 ```javascript
@@ -152,4 +162,3 @@ self.widgets.menuBuilder.afterConvertFields = function(req, item, callback) {
   return callback(null);
 }
 ```
-
