@@ -40,6 +40,7 @@ function Construct(options, callback) {
     widget.label = options.label || options.name;
     widget.css = options.css || apos.cssName(options.name);
     widget.icon = options.icon;
+    widget.afterLoad = options.afterLoad;
 
     if (_.find(options.schema, function(field) {
       return (field.name === 'content');
@@ -94,8 +95,14 @@ function Construct(options, callback) {
     widget.loadNow = function(req, items, callback) {
       req.aposSchemaWidgetLoading = true;
       return self._schemas.join(req, options.schema, items, undefined, function(err) {
-        req.aposSchemaWidgetLoading = false;
-        return setImmediate(_.partial(callback, err));
+        if (err || typeof widget.afterLoad !== 'function'){
+          req.aposSchemaWidgetLoading = false;
+          return setImmediate(_.partial(callback, err));
+        }
+        return widget.afterLoad(req, items, function(err) {
+          req.aposSchemaWidgetLoading = false;
+          return setImmediate(_.partial(callback, err));
+        });
       });
     };
     apos.addWidgetType(widget.name, widget);
