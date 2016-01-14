@@ -40,7 +40,10 @@ function Construct(options, callback) {
     widget.label = options.label || options.name;
     widget.css = options.css || apos.cssName(options.name);
     widget.icon = options.icon;
-    widget.afterLoad = options.afterLoad;
+
+    if (options.afterLoad) {
+      widget.afterLoad = options.afterLoad;
+    }
 
     if (_.find(options.schema, function(field) {
       return (field.name === 'content');
@@ -99,7 +102,7 @@ function Construct(options, callback) {
           req.aposSchemaWidgetLoading = false;
           return setImmediate(_.partial(callback, err));
         }
-        return widget.afterLoad(req, items, function(err) {
+        return widget.afterLoad(req, items[0], function(err) {
           req.aposSchemaWidgetLoading = false;
           return setImmediate(_.partial(callback, err));
         });
