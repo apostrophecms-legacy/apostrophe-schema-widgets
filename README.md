@@ -1,3 +1,7 @@
+## Not for new projects
+
+This module is intended for A2 0.5.x only. In Apostrophe 2.x, all widgets have schemas, so [creating your own widgets is easy and requires no extra npm modules](http://apostrophecms.org/docs/tutorials/getting-started/custom-widgets.html).
+
 # apostrophe-schema-widgets
 
 apostrophe-schema-widgets is a widget builder for the [Apostrophe](http://apostrophenow.org) content management system. You can easily configure any number of custom widgets using [Apostrophe schemas](https://github.com/punkave/apostrophe-schemas).
@@ -151,4 +155,3 @@ self.widgets.menuBuilder.afterConvertFields = function(req, item, callback) {
   return callback(null);
 }
 ```
-
