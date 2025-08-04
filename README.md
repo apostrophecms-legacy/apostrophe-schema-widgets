@@ -1,3 +1,7 @@
+# ⛔️ **DEPRECATED** — do not use for new projects
+
+See [our current docs](https://docs.apostrophecms.org/)
+
 ## Not for new projects
 
 This module is intended for A2 0.5.x only. In Apostrophe 2.x, all widgets have schemas, so [creating your own widgets is easy and requires no extra npm modules](http://apostrophecms.org/docs/tutorials/getting-started/custom-widgets.html).
